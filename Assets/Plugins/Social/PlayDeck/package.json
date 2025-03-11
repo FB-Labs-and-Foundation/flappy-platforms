@@ -1,0 +1,13 @@
+{
+  "name": "com.rizorpolder.social.playdeck",
+  "version": "1.0.0",
+  "displayName": "PlayDeck Social",
+  "description": "PlayDeck social integration",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  },
+  "dependencies": {
+    "com.rizorpolder.social.core" : "1.0.0"
+  }
+}

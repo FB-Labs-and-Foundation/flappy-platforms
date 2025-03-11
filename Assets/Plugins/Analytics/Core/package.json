@@ -1,0 +1,10 @@
+{
+  "name": "com.rizorpolder.analytics.core",
+  "version": "1.0.0",
+  "displayName": "Analytics Core",
+  "description": "Base logic for analytics",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  }
+}

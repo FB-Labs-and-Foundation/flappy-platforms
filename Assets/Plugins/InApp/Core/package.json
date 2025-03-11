@@ -1,0 +1,10 @@
+{
+  "name": "com.rizorpolder.inapp.core",
+  "version": "1.0.0",
+  "displayName": "InApp purchase Core",
+  "description": "Base logic for in app purchases",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "com.rizorpolder.analytics.playdeck",
+  "version": "1.0.0",
+  "displayName": "PlayDeck Analytics",
+  "description": "PlayDeck analytics integration",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  },
+  "dependencies": {
+    "com.rizorpolder.analytics.core" : "1.0.0"
+  }
+}

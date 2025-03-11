@@ -1,0 +1,10 @@
+{
+  "name": "com.rizorpolder.ads.core",
+  "version": "1.0.0",
+  "displayName": "Ads Core",
+  "description": "Base logic for ads",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  }
+}

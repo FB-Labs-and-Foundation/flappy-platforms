@@ -1,0 +1,16 @@
+{
+    "name": "com.rizorpolder.social.playdeck",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c18d5c216968aeb4499f8aef7c170ec3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

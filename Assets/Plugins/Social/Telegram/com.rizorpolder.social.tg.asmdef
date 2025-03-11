@@ -1,0 +1,16 @@
+{
+    "name": "com.rizorpolder.social.tg",
+    "rootNamespace": "",
+    "references": [
+        "com.rizorpolder.social.core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

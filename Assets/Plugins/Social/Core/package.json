@@ -1,0 +1,10 @@
+{
+  "name": "com.rizorpolder.social.core",
+  "version": "1.0.0",
+  "displayName": "Social Core",
+  "description": "Core code",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  }
+}

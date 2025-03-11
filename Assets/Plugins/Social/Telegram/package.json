@@ -1,0 +1,13 @@
+{
+  "name": "com.rizorpolder.social.tg",
+  "version": "1.0.0",
+  "displayName": "Telegram Social",
+  "description": "Referrals and Sharing ",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  },
+  "dependencies": {
+    "com.rizorpolder.social.core" : "1.0.0"
+  }
+}

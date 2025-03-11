@@ -1,0 +1,16 @@
+{
+    "name": "com.rizorpolder.analytics.playdeck",
+    "rootNamespace": "",
+    "references": [
+        "GUID:07ffc4fd9b614252b10632adc56b939a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
