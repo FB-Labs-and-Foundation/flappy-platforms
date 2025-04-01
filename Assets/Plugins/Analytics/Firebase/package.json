@@ -1,0 +1,13 @@
+{
+  "name": "com.rizorpolder.analytics.firebase",
+  "version": "1.0.0",
+  "displayName": "Analytics Firebase",
+  "description": "Firebase logic for analytics",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  },
+  "dependencies": {
+    "com.rizorpolder.analytics.core" : "1.0.0"
+  }
+}

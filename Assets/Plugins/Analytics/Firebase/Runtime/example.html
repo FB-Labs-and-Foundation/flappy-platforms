@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+</head>
+<body>
+<main class="game-wrapper">
+    <body>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { initializeAnalytics, logEvent, isSupported } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        const firebaseConfig = {
+            apiKey: "...",
+            authDomain: "...",
+            databaseURL: "...",
+            projectId: "...",
+            storageBucket: "...",
+            messagingSenderId: "...",
+            appId: "...",
+            measurementId: "..."
+        };
+
+        isSupported().then((result) => {
+            console.log('Webgl Firebase Analytic supported:' + result);
+        })
+
+        // Initialize Firebase
+        const app  = initializeApp(firebaseConfig);
+        const analytics = initializeAnalytics(app, {config: { cookie_flags: "max-age=7200;secure;samesite=none" }});
+
+        // analytics events
+        window.sendFirebaseEvent = function(eventName)
+        {
+            logEvent(analytics, eventName);
+        };
+
+        window.sendFirebaseEventWithParams = function(eventName, eventParams)
+        {
+            logEvent(analytics, eventName, eventParams);
+        };
+    </script>
+    </body>
+</main>
+</body>
+</html>
