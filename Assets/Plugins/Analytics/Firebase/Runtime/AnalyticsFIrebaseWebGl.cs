@@ -56,7 +56,7 @@ namespace Plugins.Analytics
 
 		private string ToJson(Dictionary<string, object> parameters)
 		{
-			return Unity.Plastic.Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
+			return Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
 			//var entries = parameters.Select(d =>
 			//    $"\"{d.Key}\": {string.Join(",", d.Value)}");
 			//return "{" + string.Join(",", entries) + "}";
