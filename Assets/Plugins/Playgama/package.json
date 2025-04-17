@@ -1,0 +1,13 @@
+{
+  "name": "com.rizorpolder.playgama",
+  "version": "1.0.0",
+  "displayName": "Playgama ",
+  "description": "Playgama integration",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  },
+  "dependencies": {
+    "com.rizorpolder.ads.core" : "1.0.0"
+  }
+}
