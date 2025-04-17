@@ -1,6 +1,7 @@
 using System;
 using Ads.Core.Runtime;
 using Ads.Core.Runtime.AdStatus;
+using Playgama;
 using Playgama.Modules.Advertisement;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 
 	protected override void Initialize(string sdkKey, string playerId, bool ageRestrictedFlag)
 	{
+#if UNITY_WEBGL
 		if (!int.TryParse(PlaygamaSDKProxy.PlaygamaBridgeMinimumDelayBetweenInterstitial(), out _interstitialDelay))
 		{
 			_interstitialDelay = 60;
@@ -24,6 +26,11 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 		}
 
 		IsBannersSupported = PlaygamaSDKProxy.PlaygamaBridgeIsBannerSupported() == "true";
+#else
+		_interstitialDelay = 60;
+		IsBannersSupported = true;
+#endif
+
 
 		_initialized = true;
 	}
