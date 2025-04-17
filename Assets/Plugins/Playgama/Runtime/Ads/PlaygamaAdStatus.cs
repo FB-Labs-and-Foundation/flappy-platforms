@@ -1,12 +1,15 @@
 ﻿#if UNITY_WEBGL
 namespace Playgama.Modules.Advertisement
 {
-    public enum InterstitialState
+    public enum PlaygamaAdStatus
     {
         Loading,
         Opened,
         Closed,
-        Failed
+        Failed,
+        Shown,
+        Hidden,
+        Rewarded
     }
 }
 #endif

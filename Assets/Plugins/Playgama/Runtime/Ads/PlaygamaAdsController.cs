@@ -4,6 +4,7 @@ using Ads.Core.Runtime;
 using Ads.Core.Runtime.AdStatus;
 using Playgama;
 using Playgama.Modules.Advertisement;
+using Plugins.Playgama.Runtime.Ads;
 using UnityEngine;
 
 public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : Enum
@@ -21,7 +22,7 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 
 	protected override void Initialize(string sdkKey, string playerId, bool ageRestrictedFlag)
 	{
-#if UNITY_WEBGL
+#if !UNITY_EDITOR
 		if (!int.TryParse(PlaygamaSDKProxy.PlaygamaBridgeMinimumDelayBetweenInterstitial(), out _interstitialDelay))
 		{
 			_interstitialDelay = 60;
@@ -51,10 +52,10 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 
 		if (Application.isEditor)
 		{
-			OnRewardedStateChanged(RewardedState.Loading.ToString());
-			OnRewardedStateChanged(RewardedState.Opened.ToString());
-			OnRewardedStateChanged(RewardedState.Rewarded.ToString());
-			OnRewardedStateChanged(RewardedState.Closed.ToString());
+			OnRewardedStateChanged(PlaygamaAdStatus.Loading.ToString());
+			OnRewardedStateChanged(PlaygamaAdStatus.Opened.ToString());
+			OnRewardedStateChanged(PlaygamaAdStatus.Rewarded.ToString());
+			OnRewardedStateChanged(PlaygamaAdStatus.Closed.ToString());
 		}
 		else
 		{
@@ -64,19 +65,14 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 
 	public override void ShowInterstitialAd(TEnum placement)
 	{
+		StartAdHandler(placement);
 #if !UNITY_EDITOR
-            PlaygamaBridgeShowInterstitial();
+            PlaygamaSDKProxy.PlaygamaBridgeShowInterstitial();
 #else
 
-		if (SecondsFromLastAd > _interstitialDelay)
+		if (this.TryGetStatusForPlacement(this._currentPlacement, out var status))
 		{
-			OnInterstitialStateChanged(InterstitialState.Loading.ToString());
-			OnInterstitialStateChanged(InterstitialState.Opened.ToString());
-			OnInterstitialStateChanged(InterstitialState.Closed.ToString());
-		}
-		else
-		{
-			OnInterstitialStateChanged(InterstitialState.Failed.ToString());
+			status.Set(AdStatusValue.Showed);
 		}
 #endif
 	}
@@ -100,21 +96,27 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 
 	public override void ShowBanner(TEnum placement)
 	{
+		StartAdHandler(placement);
 #if !UNITY_EDITOR
 		var options = JsonUtility.ToJson(_bannerOptions);
 		PlaygamaSDKProxy.PlaygamaBridgeShowBanner(options);
 #else
-		OnBannerStateChanged(BannerState.Loading.ToString());
-		OnBannerStateChanged(BannerState.Shown.ToString());
+		if (this.TryGetStatusForPlacement(this._currentPlacement, out var status))
+		{
+			status.Set(AdStatusValue.Showed);
+		}
 #endif
 	}
 
 	public override void HideBanner(TEnum placement)
 	{
 #if !UNITY_EDITOR
-            PlaygamaBridgeHideBanner();
+            PlaygamaSDKProxy.PlaygamaBridgeHideBanner();
 #else
-		OnBannerStateChanged(BannerState.Hidden.ToString());
+		if (this.TryGetStatusForPlacement(placement, out var status))
+		{
+			status.Set(AdStatusValue.Hidden);
+		}
 #endif
 	}
 
@@ -127,9 +129,14 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 	private void OnBannerStateChanged(string value)
 	{
 		AdHandled();
-		if (Enum.TryParse<BannerState>(value, true, out var state))
+		if (Enum.TryParse<PlaygamaAdStatus>(value, true, out var state))
 		{
 			Debug.Log($"OnBannerStateChanged: {state}");
+			var newState = AdStatusConverter.ConvertStatus(state);
+			if (this.TryGetStatusForPlacement(_currentPlacement, out var status))
+			{
+				status.Set(newState);
+			}
 		}
 	}
 
@@ -137,9 +144,14 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 	{
 		AdHandled();
 
-		if (Enum.TryParse<RewardedState>(value, true, out var state))
+		if (Enum.TryParse<PlaygamaAdStatus>(value, true, out var state))
 		{
 			Debug.Log($"OnRewardedStateChanged: {state}");
+			var newState = AdStatusConverter.ConvertStatus(state);
+			if (this.TryGetStatusForPlacement(_currentPlacement, out var status))
+			{
+				status.Set(newState);
+			}
 		}
 	}
 
@@ -147,9 +159,14 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 	{
 		AdHandled();
 
-		if (Enum.TryParse<InterstitialState>(value, true, out var state))
+		if (Enum.TryParse<PlaygamaAdStatus>(value, true, out var state))
 		{
 			Debug.Log($"OnInterstitialStateChanged: {state}");
+			var newState = AdStatusConverter.ConvertStatus(state);
+			if (this.TryGetStatusForPlacement(_currentPlacement, out var status))
+			{
+				status.Set(newState);
+			}
 		}
 	}
 
