@@ -23,15 +23,9 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 	protected override void Initialize(string sdkKey, string playerId, bool ageRestrictedFlag)
 	{
 #if !UNITY_EDITOR
-		if (!int.TryParse(PlaygamaSDKProxy.PlaygamaBridgeMinimumDelayBetweenInterstitial(), out _interstitialDelay))
-		{
-			_interstitialDelay = 60;
-			PlaygamaSDKProxy.PlaygamaBridgeSetMinimumDelayBetweenInterstitial(_interstitialDelay.ToString());
-		}
 
 		IsBannersSupported = PlaygamaSDKProxy.PlaygamaBridgeIsBannerSupported() == "true";
 #else
-		_interstitialDelay = 60;
 		IsBannersSupported = true;
 #endif
 
