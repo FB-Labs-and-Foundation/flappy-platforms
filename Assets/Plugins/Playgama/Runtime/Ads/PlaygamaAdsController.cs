@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Ads.Core.Runtime;
 using Ads.Core.Runtime.AdStatus;
 using Playgama;
@@ -15,6 +16,8 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 	public override bool AdInProgress => _adInProgress;
 
 	public bool IsBannersSupported { get; private set; }
+
+	protected Dictionary<string, object> _bannerOptions = new Dictionary<string, object>();
 
 	protected override void Initialize(string sdkKey, string playerId, bool ageRestrictedFlag)
 	{
@@ -98,7 +101,8 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 	public override void ShowBanner(TEnum placement)
 	{
 #if !UNITY_EDITOR
-            PlaygamaBridgeShowBanner(options.ToJson());
+		var options = JsonUtility.ToJson(_bannerOptions);
+		PlaygamaSDKProxy.PlaygamaBridgeShowBanner(options);
 #else
 		OnBannerStateChanged(BannerState.Loading.ToString());
 		OnBannerStateChanged(BannerState.Shown.ToString());
