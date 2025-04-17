@@ -50,17 +50,11 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 	{
 		StartAdHandler(placement);
 
-		if (Application.isEditor)
-		{
-			OnRewardedStateChanged(PlaygamaAdStatus.Loading.ToString());
-			OnRewardedStateChanged(PlaygamaAdStatus.Opened.ToString());
-			OnRewardedStateChanged(PlaygamaAdStatus.Rewarded.ToString());
-			OnRewardedStateChanged(PlaygamaAdStatus.Closed.ToString());
-		}
-		else
-		{
-			PlaygamaSDKProxy.PlaygamaBridgeShowRewarded();
-		}
+		#if !UNITY_EDITOR
+		PlaygamaSDKProxy.PlaygamaBridgeShowRewarded();
+		#else
+		OnRewardedStateChanged(PlaygamaAdStatus.Rewarded.ToString());
+		#endif
 	}
 
 	public override void ShowInterstitialAd(TEnum placement)
@@ -70,10 +64,8 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
             PlaygamaSDKProxy.PlaygamaBridgeShowInterstitial();
 #else
 
-		if (this.TryGetStatusForPlacement(this._currentPlacement, out var status))
-		{
-			status.Set(AdStatusValue.Showed);
-		}
+		OnInterstitialStateChanged(PlaygamaAdStatus.Shown.ToString());
+
 #endif
 	}
 
@@ -101,10 +93,7 @@ public class PlaygamaAdsController<TEnum> : AdsController<TEnum> where TEnum : E
 		var options = JsonUtility.ToJson(_bannerOptions);
 		PlaygamaSDKProxy.PlaygamaBridgeShowBanner(options);
 #else
-		if (this.TryGetStatusForPlacement(this._currentPlacement, out var status))
-		{
-			status.Set(AdStatusValue.Showed);
-		}
+		OnBannerStateChanged(PlaygamaAdStatus.Shown.ToString());
 #endif
 	}
 
