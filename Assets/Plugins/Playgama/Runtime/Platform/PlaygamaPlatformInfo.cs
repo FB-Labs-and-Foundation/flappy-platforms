@@ -1,5 +1,4 @@
 using System;
-using Playgama;
 using Playgama.Modules.Platform;
 
 public class PlaygamaPlatformInfo
@@ -15,7 +14,7 @@ public class PlaygamaPlatformInfo
 		{
 			if (string.IsNullOrEmpty(_platformId))
 			{
-				_platformId = PlaygamaSDKProxy.PlaygamaBridgeGetPlatformId();
+				_platformId = Playgama.PlaygamaSDKProxy.PlaygamaBridgeGetPlatformId();
 			}
 
 			return _platformId;
@@ -28,7 +27,7 @@ public class PlaygamaPlatformInfo
 		{
 			if (string.IsNullOrEmpty(_language))
 			{
-				_language = PlaygamaSDKProxy.PlaygamaBridgeGetPlatformLanguage();
+				_language = Playgama.PlaygamaSDKProxy.PlaygamaBridgeGetPlatformLanguage();
 			}
 
 			return _language;
@@ -41,7 +40,7 @@ public class PlaygamaPlatformInfo
 		{
 			if (string.IsNullOrEmpty(_payload))
 			{
-				_payload = PlaygamaSDKProxy.PlaygamaBridgeGetPlatformPayload();
+				_payload = Playgama.PlaygamaSDKProxy.PlaygamaBridgeGetPlatformPayload();
 			}
 
 			return _payload;
@@ -54,7 +53,7 @@ public class PlaygamaPlatformInfo
 		{
 			if (string.IsNullOrEmpty(_tld))
 			{
-				_tld = PlaygamaSDKProxy.PlaygamaBridgeGetPlatformTld();
+				_tld = Playgama.PlaygamaSDKProxy.PlaygamaBridgeGetPlatformTld();
 			}
 
 			return _tld;
