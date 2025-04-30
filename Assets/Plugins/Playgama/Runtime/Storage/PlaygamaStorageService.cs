@@ -170,8 +170,11 @@ namespace Playgama.Modules.Storage
             Set(key, value.ToString(), onComplete, storageType);
         }
 
-        public void Set(List<string> keys, List<object> values, Action<bool> onComplete = null, StorageType? storageType = null)
+        public void Set(Dictionary<string, string> data, Action<bool> onComplete = null, StorageType? storageType = null)
         {
+            var keys = data.Keys.ToList();
+            var values = data.Values.ToList();
+            
             var key = string.Join(_keysSeparator, keys);
             if (_setDataCallbacks.TryGetValue(key, out var callbacks))
             {
@@ -187,7 +190,7 @@ namespace Playgama.Modules.Storage
 #else
                 for (var i = 0; i < keys.Count; i++)
                 {
-                    PlayerPrefs.SetString($"{_storageDataEditorPlayerPrefsPrefix}_{keys[i]}", values[i].ToString());
+                    PlayerPrefs.SetString($"{_storageDataEditorPlayerPrefsPrefix}_{keys[i]}", values[i]);
                 }
 
                 OnSetStorageDataSuccess($"{key}");
