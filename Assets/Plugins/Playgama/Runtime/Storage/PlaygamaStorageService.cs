@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace Playgama.Modules.Storage
 {
-    public class PlaygamaStorageService : IStorageService
+    public class PlaygamaStorageService : MonoBehaviour, IStorageService
     {
         #region INTERNAL
 
