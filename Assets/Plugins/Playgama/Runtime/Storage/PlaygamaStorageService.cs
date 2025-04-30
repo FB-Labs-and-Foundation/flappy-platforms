@@ -247,7 +247,6 @@ namespace Playgama.Modules.Storage
         // Called from JS
         private void OnGetStorageDataSuccess(string result)
         {
-            Debug.LogError($"DATA GET SUCCESS : {result}");
             var keyEndIndex = result.IndexOf(_dataSeparator);
             if (keyEndIndex <= 0)
             {
@@ -297,7 +296,6 @@ namespace Playgama.Modules.Storage
 
         private void OnGetStorageDataFailed(string keysString)
         {
-            Debug.LogError($"DATA GET FAILED : {keysString}");
             var keys = keysString.Split(_keysSeparator, StringSplitOptions.RemoveEmptyEntries);
 
             if (keys.Length > 1)
