@@ -1,0 +1,10 @@
+{
+  "name": "com.rizorpolder.storage.core",
+  "version": "1.0.0",
+  "displayName": "Storage Core",
+  "description": "Base logic for storage",
+  "author": {
+    "name": "rizorpolder",
+    "email": "rizorpolder@gmail.com"
+  }
+}
