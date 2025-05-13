@@ -54,7 +54,7 @@ namespace Plugins.Playgama.Runtime.InApp
         
         public bool IsPurchaseInProcess { get; private set; }
 
-        public void Initialize(IPurchaseHandler purchaseHandler)
+        public void Initialize(IPurchaseHandler purchaseHandler, Action onInitialized)
         {
             _purchaseHandler = purchaseHandler;
             
@@ -65,6 +65,7 @@ namespace Plugins.Playgama.Runtime.InApp
                         _cachedProducts.Add(product[PRODUCT_ID], product);
                     
                 _isInitialized = true;
+                onInitialized?.Invoke();
             });
         }
 
