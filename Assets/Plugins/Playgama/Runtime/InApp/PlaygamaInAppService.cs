@@ -180,9 +180,7 @@ namespace Plugins.Playgama.Runtime.InApp
             }
             
             IsPurchaseInProcess = false;
-
-            var firstPurchase = purchase.First();
-            _purchaseHandler.OnPurchaseCompleted(firstPurchase.Key);
+            _purchaseHandler.OnPurchaseCompleted(purchase[PRODUCT_ID]);
         }
 
         private void OnPaymentsPurchaseFailed()
