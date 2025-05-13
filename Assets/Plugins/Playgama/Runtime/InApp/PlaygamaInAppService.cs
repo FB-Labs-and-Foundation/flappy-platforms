@@ -139,7 +139,7 @@ namespace Plugins.Playgama.Runtime.InApp
         private void Consume(string productId)
         {
 #if !UNITY_EDITOR
-            PlaygamaBridgePaymentsConsumePurchase(id);
+            PlaygamaBridgePaymentsConsumePurchase(productId);
 #else
             OnPaymentsConsumePurchaseCompleted("false");
 #endif
