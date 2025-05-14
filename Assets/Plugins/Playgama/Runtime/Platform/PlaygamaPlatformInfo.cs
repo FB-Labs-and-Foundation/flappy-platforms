@@ -95,7 +95,7 @@ public class PlaygamaPlatformInfo
 		}
 
 #if !UNITY_EDITOR
-		PlaygamaSDKProxy.PlaygamaBridgeSendMessageToPlatform(messageString);
+		Playgama.PlaygamaSDKProxy.PlaygamaBridgeSendMessageToPlatform(messageString);
 #endif
 	}
 }
