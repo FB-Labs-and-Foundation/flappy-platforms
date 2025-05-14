@@ -1,7 +1,6 @@
 ﻿#if UNITY_WEBGL
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using InApp.Core.Runtime;
 using UnityEngine;
 #if !UNITY_EDITOR
@@ -17,6 +16,12 @@ namespace Plugins.Playgama.Runtime.InApp
         private const string PRODUCT_CURRENCY = "priceCurrencyCode";
         private const string PRODUCT_PRICE_VALUE = "priceValue";
         
+        private Action<bool, List<Dictionary<string, string>>> _getCatalogCallback;
+        private Dictionary<string, Dictionary<string, string>> _cachedProducts = new();
+        private IPurchaseHandler _purchaseHandler;
+        private bool _isInitialized;
+        private string _consumingProductId;
+        
         public bool isSupported
         {
             get
@@ -28,29 +33,6 @@ namespace Plugins.Playgama.Runtime.InApp
 #endif
             }
         }
-
-#if !UNITY_EDITOR
-        [DllImport("__Internal")]
-        private static extern string PlaygamaBridgeIsPaymentsSupported();
-
-        [DllImport("__Internal")]
-        private static extern void PlaygamaBridgePaymentsPurchase(string id);
-
-        [DllImport("__Internal")]
-        private static extern void PlaygamaBridgePaymentsConsumePurchase(string id);
-        
-        [DllImport("__Internal")]
-        private static extern void PlaygamaBridgePaymentsGetPurchases();
-        
-        [DllImport("__Internal")]
-        private static extern void PlaygamaBridgePaymentsGetCatalog();
-#endif
-        
-        private Action<bool, List<Dictionary<string, string>>> _getCatalogCallback;
-        private Dictionary<string, Dictionary<string, string>> _cachedProducts = new();
-        private IPurchaseHandler _purchaseHandler;
-        private bool _isInitialized;
-        private string _consumingProductId;
         
         public bool IsPurchaseInProcess { get; private set; }
 
@@ -115,7 +97,9 @@ namespace Plugins.Playgama.Runtime.InApp
         {
             GetPurchases();
         }
-        
+
+        #region UTILITY
+
         private void GetPurchases(Action<bool, List<Dictionary<string, string>>> onComplete = null)
         {
 #if !UNITY_EDITOR
@@ -160,6 +144,8 @@ namespace Plugins.Playgama.Runtime.InApp
 
             return default;
         }
+
+        #endregion
 
         #region JS_CALLBACKS
 
@@ -247,6 +233,27 @@ namespace Plugins.Playgama.Runtime.InApp
             _getCatalogCallback?.Invoke(false, null);
             _getCatalogCallback = null;
         }
+
+        #endregion
+        
+        #region INTERNAL
+
+#if !UNITY_EDITOR
+        [DllImport("__Internal")]
+        private static extern string PlaygamaBridgeIsPaymentsSupported();
+
+        [DllImport("__Internal")]
+        private static extern void PlaygamaBridgePaymentsPurchase(string id);
+
+        [DllImport("__Internal")]
+        private static extern void PlaygamaBridgePaymentsConsumePurchase(string id);
+        
+        [DllImport("__Internal")]
+        private static extern void PlaygamaBridgePaymentsGetPurchases();
+        
+        [DllImport("__Internal")]
+        private static extern void PlaygamaBridgePaymentsGetCatalog();
+#endif
 
         #endregion
     }

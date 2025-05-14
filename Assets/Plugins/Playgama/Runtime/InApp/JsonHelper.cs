@@ -38,12 +38,9 @@ namespace Plugins.Playgama.Runtime.InApp
                 foreach (var item in data)
                 {
                     if (!isFirst)
-                    {
                         sb.Append(",");
-                    }
 
                     isFirst = false;
-
                     sb.Append(item.Value.ToJson().SurroundWithKey(item.Key));
                 }
             }
@@ -61,10 +58,9 @@ namespace Plugins.Playgama.Runtime.InApp
             foreach (var keyValuePair in keyValuePairs)
             {
                 var keyValue = keyValuePair.Split(new[] { "\":" }, StringSplitOptions.None);
+                
                 if (keyValue.Length == 2)
-                {
                     result[keyValue[0].Trim('"')] = keyValue[1].Trim('"');
-                }
             }
 
             return result;
@@ -80,9 +76,7 @@ namespace Plugins.Playgama.Runtime.InApp
             foreach (var obj in objects)
             {
                 if (string.IsNullOrEmpty(obj))
-                {
                     continue;
-                }
                 
                 var formattedObject = obj.Trim('{', '}').Trim();
                 var dict = new Dictionary<string, string>();
@@ -91,10 +85,9 @@ namespace Plugins.Playgama.Runtime.InApp
                 foreach (var keyValuePair in keyValuePairs)
                 {
                     var keyValue = keyValuePair.Split(new[] { "\":" }, StringSplitOptions.None);
+                    
                     if (keyValue.Length == 2)
-                    {
                         dict[keyValue[0].Trim('"')] = keyValue[1].Trim('"');
-                    }
                 }
 
                 result.Add(dict);
@@ -111,9 +104,7 @@ namespace Plugins.Playgama.Runtime.InApp
             var values = json.Split(new[] { ",\"" }, StringSplitOptions.None);
 
             foreach (var value in values)
-            {
                 result.Add(value.Trim('"'));
-            }
 
             return result;
         }
@@ -127,11 +118,9 @@ namespace Plugins.Playgama.Runtime.InApp
             foreach (var item in data)
             {
                 if (!isFirst)
-                {
                     sb.Append(",");
-                }
+                
                 isFirst = false;
-
                 sb.Append(item.ToJson());
             }
 

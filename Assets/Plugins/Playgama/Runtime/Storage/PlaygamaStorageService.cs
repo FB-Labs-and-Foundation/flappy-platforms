@@ -11,30 +11,6 @@ namespace Playgama.Modules.Storage
 {
     public class PlaygamaStorageService : MonoBehaviour, IStorageService
     {
-        #region INTERNAL
-
-        #if !UNITY_EDITOR
-        [DllImport("__Internal")]
-        private static extern string PlaygamaBridgeIsStorageSupported(string storageType);
-
-        [DllImport("__Internal")]
-        private static extern string PlaygamaBridgeIsStorageAvailable(string storageType);
-
-        [DllImport("__Internal")]
-        private static extern string PlaygamaBridgeGetStorageDefaultType();
-
-        [DllImport("__Internal")]
-        private static extern void PlaygamaBridgeGetStorageData(string key, string storageType);
-
-        [DllImport("__Internal")]
-        private static extern void PlaygamaBridgeSetStorageData(string key, string value, string storageType);
-
-        [DllImport("__Internal")]
-        private static extern void PlaygamaBridgeDeleteStorageData(string key, string storageType);
-        #endif
-
-        #endregion
-        
         #if !UNITY_EDITOR
         public StorageType DefaultType 
         { 
@@ -98,6 +74,7 @@ namespace Playgama.Modules.Storage
         public void Get(List<string> keys, Action<bool, List<string>> onComplete, StorageType? storageType = null)
         {
             var keysCount = keys.Count;
+            
             if (keysCount <= 0)
             {
                 onComplete?.Invoke(false, null);
@@ -111,6 +88,7 @@ namespace Playgama.Modules.Storage
             }
             
             var key = string.Join(_keysSeparator, keys);
+            
             if (_getMultipleDataCallbacks.TryGetValue(key, out var callbacks))
             {
                 callbacks.Add(onComplete);
@@ -126,10 +104,9 @@ namespace Playgama.Modules.Storage
                 foreach (var k in keys)
                 {
                     var v = PlayerPrefs.GetString($"{_storageDataEditorPlayerPrefsPrefix}_{k}", null);
+                    
                     if (string.IsNullOrEmpty(v))
-                    {
                         v = null;
-                    }
 
                     values.Add(v);
                 }
@@ -174,8 +151,8 @@ namespace Playgama.Modules.Storage
         {
             var keys = data.Keys.ToList();
             var values = data.Values.ToList();
-            
             var key = string.Join(_keysSeparator, keys);
+            
             if (_setDataCallbacks.TryGetValue(key, out var callbacks))
             {
                 callbacks.Add(onComplete);
@@ -189,9 +166,7 @@ namespace Playgama.Modules.Storage
                 PlaygamaBridgeSetStorageData(key, value, ConvertStorageType(storageType));
 #else
                 for (var i = 0; i < keys.Count; i++)
-                {
                     PlayerPrefs.SetString($"{_storageDataEditorPlayerPrefsPrefix}_{keys[i]}", values[i]);
-                }
 
                 OnSetStorageDataSuccess($"{key}");
 #endif
@@ -221,6 +196,7 @@ namespace Playgama.Modules.Storage
         public void Remove(List<string> keys, Action<bool> onComplete = null, StorageType? storageType = null)
         {
             var key = string.Join(_keysSeparator, keys);
+            
             if (_deleteDataCallbacks.TryGetValue(key, out var callbacks))
             {
                 callbacks.Add(onComplete);
@@ -233,9 +209,7 @@ namespace Playgama.Modules.Storage
                 PlaygamaBridgeDeleteStorageData(key, ConvertStorageType(storageType));
 #else
                 foreach (var k in keys)
-                {
                     PlayerPrefs.DeleteKey($"{_storageDataEditorPlayerPrefsPrefix}_{k}");
-                }
 
                 OnDeleteStorageDataSuccess($"{key}");
 #endif
@@ -248,10 +222,9 @@ namespace Playgama.Modules.Storage
         private void OnGetStorageDataSuccess(string result)
         {
             var keyEndIndex = result.IndexOf(_dataSeparator);
+            
             if (keyEndIndex <= 0)
-            {
                 return;
-            }
 
             var keysString = result.Substring(0, keyEndIndex);
             var valuesString = result.Substring(keyEndIndex + _dataSeparator.Length, result.Length - keyEndIndex - _dataSeparator.Length);
@@ -264,10 +237,9 @@ namespace Playgama.Modules.Storage
                 for (var i = 0; i < values.Count; i++)
                 {
                     var value = values[i];
+                    
                     if (string.IsNullOrEmpty(value))
-                    {
                         values[i] = null;
-                    }
                 }
 
                 if (_getMultipleDataCallbacks.TryGetValue(keysString, out var callbacks))
@@ -275,9 +247,7 @@ namespace Playgama.Modules.Storage
                     _getMultipleDataCallbacks.Remove(keysString);
 
                     foreach (var callback in callbacks)
-                    {
                         callback?.Invoke(true, values);
-                    }
                 }
             }
             else
@@ -287,9 +257,7 @@ namespace Playgama.Modules.Storage
                     _getDataCallbacks.Remove(keysString);
 
                     foreach (var callback in callbacks)
-                    {
                         callback?.Invoke(true, string.IsNullOrEmpty(valuesString) ? null : valuesString);
-                    }
                 }
             }
         }
@@ -305,9 +273,7 @@ namespace Playgama.Modules.Storage
                     _getMultipleDataCallbacks.Remove(keysString);
 
                     foreach (var callback in callbacks)
-                    {
                         callback?.Invoke(false, null);
-                    }
                 }
             }
             else
@@ -317,9 +283,7 @@ namespace Playgama.Modules.Storage
                     _getDataCallbacks.Remove(keysString);
 
                     foreach (var callback in callbacks)
-                    {
                         callback?.Invoke(false, null);
-                    }
                 }
             }
         }
@@ -331,9 +295,7 @@ namespace Playgama.Modules.Storage
                 _setDataCallbacks.Remove(key);
 
                 foreach (var callback in callbacks)
-                {
                     callback?.Invoke(true);
-                }
             }
         }
 
@@ -344,9 +306,7 @@ namespace Playgama.Modules.Storage
                 _setDataCallbacks.Remove(key);
 
                 foreach (var callback in callbacks)
-                {
                     callback?.Invoke(false);
-                }
             }
         }
 
@@ -357,9 +317,7 @@ namespace Playgama.Modules.Storage
                 _deleteDataCallbacks.Remove(key);
 
                 foreach (var callback in callbacks)
-                {
                     callback?.Invoke(true);
-                }
             }
         }
 
@@ -370,9 +328,7 @@ namespace Playgama.Modules.Storage
                 _deleteDataCallbacks.Remove(key);
 
                 foreach (var callback in callbacks)
-                {
                     callback?.Invoke(false);
-                }
             }
         }
 
@@ -414,6 +370,30 @@ namespace Playgama.Modules.Storage
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
+
+        #endregion
+        
+        #region INTERNAL
+
+#if !UNITY_EDITOR
+        [DllImport("__Internal")]
+        private static extern string PlaygamaBridgeIsStorageSupported(string storageType);
+
+        [DllImport("__Internal")]
+        private static extern string PlaygamaBridgeIsStorageAvailable(string storageType);
+
+        [DllImport("__Internal")]
+        private static extern string PlaygamaBridgeGetStorageDefaultType();
+
+        [DllImport("__Internal")]
+        private static extern void PlaygamaBridgeGetStorageData(string key, string storageType);
+
+        [DllImport("__Internal")]
+        private static extern void PlaygamaBridgeSetStorageData(string key, string value, string storageType);
+
+        [DllImport("__Internal")]
+        private static extern void PlaygamaBridgeDeleteStorageData(string key, string storageType);
+#endif
 
         #endregion
     }
