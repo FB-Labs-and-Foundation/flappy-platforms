@@ -22,7 +22,7 @@ namespace Plugins.Playgama.Runtime.InApp
         private bool _isInitialized;
         private string _consumingProductId;
         
-        public bool isSupported
+        public bool IsSupported
         {
             get
             {
@@ -49,6 +49,10 @@ namespace Plugins.Playgama.Runtime.InApp
                 _isInitialized = true;
                 onInitialized?.Invoke();
             });
+            
+#if UNITY_EDITOR
+            _isInitialized = true;
+#endif
         }
 
         public bool IsInitialized()
@@ -63,7 +67,7 @@ namespace Plugins.Playgama.Runtime.InApp
 #if !UNITY_EDITOR
             PlaygamaBridgePaymentsPurchase(id);
 #else
-            OnPaymentsPurchaseFailed();
+            OnPaymentsPurchaseCompleted(JsonHelper.ToJson(new Dictionary<string, object>() { { PRODUCT_ID, id } }));
 #endif
         }
         
