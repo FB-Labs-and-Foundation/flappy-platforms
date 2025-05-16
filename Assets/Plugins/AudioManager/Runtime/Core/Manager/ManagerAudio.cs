@@ -793,18 +793,15 @@ namespace AudioManager.Runtime.Core.Manager
 
 		#region Music
 
-		public bool IsMusicEnabled()
-		{
-			var currentVolume = GetMusicVolume();
-			var value = (currentVolume + 80) / 80;
-			return value > 0;
-		}
+		public bool IsMusicEnabled() => GetMusicVolume() > 0;
 
 		public float GetMusicVolume()
 		{
 			var mixer = managerAudioConfig.GetAudioMixer();
 			mixer.GetFloat(managerAudioConfig.MusicVolumeKey, out var currentVolume);
-			return currentVolume;
+			var value = (currentVolume + 80) / 80;
+
+			return value;
 		}
 
 		/// <summary>
@@ -835,18 +832,14 @@ namespace AudioManager.Runtime.Core.Manager
 
 		#region Sound
 
-		public bool IsSoundsEnabled()
-		{
-			var currentVolume = GetSoundsVolume();
-			var value = (currentVolume + 80) / 80;
-			return value > 0;
-		}
+		public bool IsSoundsEnabled() => GetSoundsVolume() > 0;
 
 		public float GetSoundsVolume()
 		{
 			var mixer = managerAudioConfig.GetAudioMixer();
 			mixer.GetFloat(managerAudioConfig.SoundVolumeKey, out var currentVolume);
-			return currentVolume;
+			var value = (currentVolume + 80) / 80;
+			return value;
 		}
 
 		/// <summary>
