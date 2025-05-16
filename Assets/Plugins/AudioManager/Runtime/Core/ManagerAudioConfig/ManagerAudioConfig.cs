@@ -79,6 +79,9 @@ namespace AudioManager.Runtime.Core.ManagerAudioConfig
 		private Dictionary<string, SoundHolder> soundsMap;
 		private AudioList audioList;
 
+
+		public AudioMixer GetAudioMixer() => audioMixer;
+
 		public bool IfManagerAudioEnabled()
 		{
 			return isManagerAudioEnabled;
@@ -96,8 +99,7 @@ namespace AudioManager.Runtime.Core.ManagerAudioConfig
 			if (audioFilesJson != null)
 			{
 				audioList = JsonUtility.FromJson<AudioList>(audioFilesJson.ToString());
-				UpdateAudioMixerMusicVolume();
-				UpdateAudioMixerSoundVolume();
+				InitializeAudioVolume();
 			}
 
 			FillSounds();
@@ -271,45 +273,10 @@ namespace AudioManager.Runtime.Core.ManagerAudioConfig
 			return "";
 		}
 
-		#region Music
-
-		private void UpdateAudioMixerMusicVolume()
+		private void InitializeAudioVolume()
 		{
-			audioMixer.SetFloat(MusicVolumeKey, IfMusicEnabled() ? 0 : -80);
+
 		}
-
-		public bool IfMusicEnabled()
-		{
-			return PlayerPrefs.GetInt(MusicVolumeKey, 1) > 0;
-		}
-
-		public void SetMusicEnabledState(bool value)
-		{
-			PlayerPrefs.SetInt(MusicVolumeKey, value ? 1 : 0);
-			UpdateAudioMixerMusicVolume();
-		}
-
-		#endregion Music
-
-		#region Sound
-
-		private void UpdateAudioMixerSoundVolume()
-		{
-			audioMixer.SetFloat(SoundVolumeKey, IfSoundEnabled() ? 0 : -80);
-		}
-
-		public bool IfSoundEnabled()
-		{
-			return PlayerPrefs.GetInt(SoundVolumeKey, 1) > 0;
-		}
-
-		public void SetSoundEnabledState(bool value)
-		{
-			PlayerPrefs.SetInt(SoundVolumeKey, value ? 1 : 0);
-			UpdateAudioMixerSoundVolume();
-		}
-
-		#endregion Sound
 
 #if UNITY_EDITOR
 		[CustomEditor(typeof(ManagerAudioConfig), true)]
